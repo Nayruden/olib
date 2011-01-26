@@ -9,6 +9,9 @@ import org.bukkit.util.Vector;
 // This code is inspired by sk89's TargetBlock.java in WorldEdit.
 
 /**
+ * This class is an inefficient trace implementation. It simply crawls along a
+ * direction checking for new blocks.
+ *
  * @author Nayruden
  */
 public class Trace {
@@ -39,6 +42,13 @@ public class Trace {
         this(player, max_distance, DEFAULT_SLICE_DISTANCE);
     }
 
+    /**
+     * Create a trace. Does not actually perform any tracing yet.
+     * @param player the player you'd like to trace from (using view vector)
+     * @param max_distance the maximum distance to allow the trace to go
+     * @param slice_distance the slice distance for the trace, smaller is more
+     * accurate but slower.
+     */
     public Trace(Player player, double max_distance, double slice_distance) {
         this.world = player.getWorld();
         this.max_distance = max_distance;
