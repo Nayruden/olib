@@ -4,6 +4,7 @@
  */
 package net.omnivr.olib;
 
+import java.util.Arrays;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
@@ -32,5 +33,12 @@ public class Util {
         return forwardVector(ent.getLocation().getPitch(), ent.getLocation().getYaw());
     }
 
-    private Util() {} // No instances of this class
+    public static <T> T[] concat(T[] first, T[] second) {
+        T[] result = Arrays.copyOf(first, first.length + second.length);
+        System.arraycopy(second, 0, result, first.length, second.length);
+        return result;
+    }
+
+    private Util() {
+    } // No instances of this class
 }
