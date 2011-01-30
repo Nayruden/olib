@@ -4,6 +4,9 @@
  */
 package net.omnivr.olib;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
@@ -37,6 +40,34 @@ public class Util {
         T[] result = Arrays.copyOf(first, first.length + second.length);
         System.arraycopy(second, 0, result, first.length, second.length);
         return result;
+    }
+
+    public static void extractResourceTo(String resource, String path) {
+        FileWriter output;
+        try {
+            output = new FileWriter(path);
+        } catch (IOException ex) {
+            System.err.println("Error: Could not create file " + path);
+            return;
+        }
+
+        InputStream input = Util.class.getResourceAsStream(resource);
+        try {
+            int c = input.read();
+            while (c > 0) {
+                output.write(c);
+                c = input.read();
+            }
+        } catch (IOException ex) {
+            System.err.println("Error while writing file: " + path);
+        } finally {
+            try {
+                output.close();
+                input.close();
+            } catch (IOException ex) {
+                // Just give up
+            }
+        }
     }
 
     private Util() {
