@@ -8,6 +8,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.Chest;
+import org.bukkit.block.ContainerBlock;
 import org.bukkit.entity.Entity;
 import org.bukkit.util.Vector;
 
@@ -40,6 +46,32 @@ public class Util {
         T[] result = Arrays.copyOf(first, first.length + second.length);
         System.arraycopy(second, 0, result, first.length, second.length);
         return result;
+    }
+
+    public static class DoubleChest {
+
+        public Block primary_chest;
+        public Block secondary_chest;
+    }
+
+    public static DoubleChest getDoubleChestIfExists(Block block) {
+        if (block.getType() == Material.CHEST) { // Look for double chest
+            for (BlockFace neighbor_face : Constants.NEIGHBORS) {
+                Block neighbor = block.getRelative(neighbor_face);
+                if (neighbor.getType() == Material.CHEST) {
+                    DoubleChest double_chest = new DoubleChest();
+                    if (neighbor_face == BlockFace.NORTH || neighbor_face == BlockFace.EAST) {
+                        double_chest.primary_chest = neighbor;
+                        double_chest.secondary_chest = block;
+                    } else {
+                        double_chest.primary_chest = block;
+                        double_chest.secondary_chest = neighbor;
+                    }
+                    return double_chest;
+                }
+            }
+        }
+        return null;
     }
 
     public static void extractResourceTo(String resource, String path) {
